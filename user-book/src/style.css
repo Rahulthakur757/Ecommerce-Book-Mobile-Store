@@ -1,0 +1,11 @@
+.book_image {
+  border: 2px solid rgba(239,233,227, 0.6);
+  transition: transform 0.3s ease, box-shadow 0.3s ease, border-color 0.3s ease;
+  border-radius: 10px;
+  cursor: pointer;
+}
+.book_image:hover {
+  transform: scale(1.02);
+  border-radius: 10px;
+  border-color: #84994F; /* yellow border highlight */
+}

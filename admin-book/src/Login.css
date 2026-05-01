@@ -1,0 +1,51 @@
+/* Background and layout */
+.login-page {
+  height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: linear-gradient(135deg, #e0f7fa, #e1bee7); /* light blue and lavender */
+}
+
+/* Login box styling */
+.login-box {
+  background-color: #ffffff;
+  padding: 40px;
+  border-radius: 15px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+  width: 100%;
+  max-width: 450px;
+}
+
+/* Title */
+.login-title {
+  color: #198754; /* Bootstrap success color */
+  font-weight: bold;
+  margin-bottom: 25px;
+}
+
+/* Form styling */
+.login-form .form-label {
+  font-weight: 500;
+  color: #555;
+}
+
+.login-form .form-control {
+  border-radius: 8px;
+  padding: 10px;
+  border: 1px solid #ccc;
+}
+
+.login-form .form-control:focus {
+  border-color: #198754;
+  box-shadow: 0 0 0 0.2rem rgba(25, 135, 84, 0.25);
+}
+
+/* Button */
+.login-button {
+  width: 100%;
+  padding: 10px;
+  border-radius: 8px;
+  font-weight: 600;
+  font-size: 16px;
+}
