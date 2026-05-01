@@ -1,4 +1,6 @@
+# =========================
 # Logs
+# =========================
 logs
 *.log
 npm-debug.log*
@@ -7,18 +9,53 @@ yarn-error.log*
 pnpm-debug.log*
 lerna-debug.log*
 
-node_modules
-dist
-dist-ssr
+# =========================
+# Dependencies
+# =========================
+node_modules/
+
+# =========================
+# Build Outputs
+# =========================
+dist/
+dist-ssr/
+build/
+.next/
+out/
+
+# =========================
+# Environment Variables (VERY IMPORTANT)
+# =========================
+.env
+.env.*
+!.env.example
+
+# =========================
+# Local Files
+# =========================
 *.local
 
-# Editor directories and files
+# =========================
+# Editor Files
+# =========================
 .vscode/*
 !.vscode/extensions.json
-.idea
+.idea/
+
+# =========================
+# OS Files
+# =========================
 .DS_Store
-*.suo
-*.ntvs*
-*.njsproj
-*.sln
-*.sw?
+Thumbs.db
+
+# =========================
+# Build Tools
+# =========================
+coverage/
+
+# =========================
+# Optional (your project use case)
+# =========================
+uploads/
+storage/
+*.sqlite
