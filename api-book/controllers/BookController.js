@@ -6,8 +6,7 @@ const Review = require('../models/Review')
 //book ko add karne ka route (AddBook.jsx)
 async function addBook(req, res) {
     try {
-
-        console.log("FILE:", req.file); // 🔥 debug
+        console.log("FILE:", req.file);
 
         if (!req.file) {
             return res.status(400).send({
@@ -16,37 +15,30 @@ async function addBook(req, res) {
             });
         }
 
-        // Cloudinary config (safe place)
         cloudinary.config({
             cloud_name: process.env.CLOUD_NAME,
             api_key: process.env.CLOUD_API_KEY,
             api_secret: process.env.CLOUD_API_SECRET
         });
 
-        let upload;
-
-        if (req.file.path) {
-            upload = await cloudinary.uploader.upload(req.file.path);
-        }
+        const upload = await cloudinary.uploader.upload(req.file.path);
 
         let book = new Book(req.body);
-
-        if (upload) {
-            book.image = upload.secure_url;
-        }
+        book.image = upload.secure_url;
 
         await book.save();
 
         return res.status(200).send({
             success: true,
-            message: "Data saved successfully"
+            message: "Book saved successfully"
         });
 
     } catch (error) {
-        console.log(" ERROR:", error); 
+        console.log("ERROR:", error);
+
         return res.status(500).send({
             success: false,
-            message: error.message 
+            message: error.message
         });
     }
 }

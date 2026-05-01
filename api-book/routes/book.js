@@ -21,7 +21,7 @@ const storage = multer.diskStorage({
 });
 
 const uploader = multer({
-    storage: storage,
+    storage: storage,   // ✅ yaha storage use karo
     limits: { fileSize: 10 * 1024 * 1024 }
 });
 //book ko add karne ka route (AddBook.jsx)
