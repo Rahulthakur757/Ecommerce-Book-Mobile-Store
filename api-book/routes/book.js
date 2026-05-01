@@ -9,9 +9,20 @@ router.use(bodyParser.urlencoded({
     extended: false
 }));
 
+
+
+const storage = multer.diskStorage({
+    destination: function (req, file, cb) {
+        cb(null, '/tmp')
+    },
+    filename: function (req, file, cb) {
+        cb(null, Date.now() + '-' + file.originalname)
+    }
+});
+
 const uploader = multer({
-    storage: multer.diskStorage({}),       // temporary file storage ke lie
-    limits: { fileSize: 10 * 2024 * 1024}
+    storage: storage,
+    limits: { fileSize: 10 * 1024 * 1024 }
 });
 //book ko add karne ka route (AddBook.jsx)
 router.post('/add/book', uploader.single("image"), (req,res) => {  
