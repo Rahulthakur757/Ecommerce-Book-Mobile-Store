@@ -14,7 +14,7 @@ const uploader = multer({
     limits: { fileSize: 10 * 2024 * 1024}
 });
 //book ko add karne ka route (AddBook.jsx)
-router.post('/add/book', uploader.single("file"), (req,res) => {  
+router.post('/add/book', uploader.single("image"), (req,res) => {  
     BookController.addBook(req, res);
 
 })

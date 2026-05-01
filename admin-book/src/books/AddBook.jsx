@@ -19,7 +19,7 @@ function AddBook() {
 
     let [showSpinner, setShowSpinner] = useState(false);
     let [buttonDisable, setButtonDisable] = useState(false);
-    
+
     let [bookTitle, setBookTitle] = useState('');
     let [author, setAuthor] = useState('');
     let [shortDescription, setShortDescription] = useState('');
@@ -41,8 +41,14 @@ function AddBook() {
     let [file, setFile] = useState();
 
     function doAddBook() {
+
+        if (!file) {
+            alert("Please select an image");
+            return;
+        }
         setButtonDisable(true);
         setShowSpinner(true);
+
         let formData = new FormData()
         formData.append('bookTitle', bookTitle)
         formData.append('author', author)
@@ -62,8 +68,7 @@ function AddBook() {
         formData.append('publishYear', publishYear)
         formData.append('width', width)
         formData.append('height', height)
-        formData.append('file', file)
-        formData.append('fileName', file.name)
+        formData.append('image', file);
 
         axios({
             // url: 'http://localhost:3000/add/book',
@@ -251,7 +256,7 @@ function AddBook() {
                     </Button>
                 </Modal.Footer>
             </Modal>
-            {showSpinner && <Spinner animation="border"  />}
+            {showSpinner && <Spinner animation="border" />}
         </Container>
     )
 }
