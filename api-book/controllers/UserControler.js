@@ -205,29 +205,3 @@ module.exports = {
     getReviewForAdmin
 }
 
-
-
-
-
-
-
-// try {
-//     console.log(req.body);
-//     let user = await Admin.findOne({ email: req.body.email });
-//     if(!user) {
-//         res.status(500).send({ success: false, message: 'Invalid User Name / Password'});
-//     } else {
-//         if(user.password === req.body.password) {
-//             user.lastLogin = new Date();
-//             await user.save();
-//             res.status(200).send({ success: true, message: 'Login Success...'});
-//         } else {
-//             res.status(500).send({ success: false, message: 'Invalid User Name / Password'});
-//         }
-//     }
-// } catch (error) {
-//     console.log(error);
-//     res.status(500).send({ success: false, message: 'Something went wrong..'})
-
-// }
-
