@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Apex Institute of Technology & Management</title>
+  <style>
+    /* Reset and Base Styles */
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    }
+
+    body {
+      background-color: #f8fafc;
+      color: #0f172a;
+      line-height: 1.6;
+    }
+
+    /* College Website Demo Header */
+    header {
+      background-color: #1e3a8a;
+      color: #ffffff;
+      padding: 1.5rem 2rem;
+      text-align: center;
+      box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+    }
+
+    header h1 {
+      font-size: 1.8rem;
+      font-weight: 700;
+    }
+
+    header p {
+      font-size: 0.95rem;
+      opacity: 0.9;
+    }
+
+    /* Main Container */
+    main {
+      max-width: 900px;
+      margin: 3rem auto;
+      padding: 0 1.5rem;
+      text-align: center;
+    }
+
+    .hero-card {
+      background: #ffffff;
+      padding: 2.5rem;
+      border-radius: 12px;
+      border: 1px solid #e2e8f0;
+      box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.05);
+    }
+
+    .hero-card h2 {
+      color: #1e3a8a;
+      margin-bottom: 1rem;
+    }
+
+    .hero-card p {
+      color: #475569;
+      margin-bottom: 1.5rem;
+    }
+
+    /* Floating Chat Badge Prompt */
+    .chat-prompt-badge {
+      position: fixed;
+      bottom: 90px;
+      right: 25px;
+      background-color: #1e3a8a;
+      color: #ffffff;
+      padding: 10px 16px;
+      border-radius: 20px;
+      font-size: 0.85rem;
+      font-weight: 600;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+      animation: pulse 2s infinite;
+      z-index: 999;
+    }
+
+    @keyframes pulse {
+      0% { transform: scale(1); }
+      50% { transform: scale(1.05); }
+      100% { transform: scale(1); }
+    }
+  </style>
+</head>
+<body>
+
+  <header>
+    <h1>Apex Institute of Technology & Management</h1>
+    <p>Empowering Minds, Shaping Futures</p>
+  </header>
+
+  <main>
+    <section class="hero-card">
+      <h2>Welcome to the Student Portal</h2>
+      <p>Have questions regarding admissions, course fees, exam dates, or campus windows? Click the chat button at the bottom-right corner of your screen to talk to our AI Assistant!</p>
+    </section>
+  </main>
+
+  <!-- Visual Indicator for Users -->
+  <div class="chat-prompt-badge">💬 Ask AI Assistant</div>
+
+  <!-- BOTPRESS EMBED SCRIPT CONNECTING FRONTEND TO BACKEND API -->
+  <script src="https://cdn.botpress.cloud/webchat/v2/inject.js"></script>
+  <script>
+    window.botpress.init({
+      "botId": "YOUR_BOT_ID_HERE",
+      "hostUrl": "https://cdn.botpress.cloud/webchat/v2",
+      "messagingUrl": "https://messaging.botpress.cloud",
+      "clientId": "YOUR_CLIENT_ID_HERE",
+      "botName": "Apex Campus Assistant",
+      "frontendVersion": "v2",
+      "theme": "light",
+      "themeColor": "#1e3a8a",
+      "hideWidget": false,
+      "disableAnimations": false
+    });
+  </script>
+
+</body>
+</html>
