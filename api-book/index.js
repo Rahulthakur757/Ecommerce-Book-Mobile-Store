@@ -11,7 +11,10 @@ const discount = require('./routes/discount');
 const user = require('./routes/user');
 const place = require('./routes/place');
 const payment = require('./routes/payment');
-app.use(cors());
+app.use(cors({
+    origin: process.env.FRONTEND_URL,
+    credentials: true
+}));
 app.use(book);
 app.use(mobile);
 app.use(discount);
