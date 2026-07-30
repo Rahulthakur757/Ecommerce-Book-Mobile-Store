@@ -4,9 +4,9 @@ import Login from './Login';
 import { useState } from 'react';
 import { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom'
-import profile from './assets/profile.svg'
+// import profile from './assets/profile.svg'
 import oders from './assets/orders.svg'
-import rahul from './assets/rahul.jpg'
+
 import { useSelector } from 'react-redux';
 
 
@@ -42,7 +42,7 @@ function NavBar() {
   }
 
 
-  function searchProduct () {
+  function searchProduct() {
     alert("serch box")
   }
   return (
@@ -62,10 +62,10 @@ function NavBar() {
             </Nav>
 
 
-            <Nav.Link onClick={() => navigate('/cart')} className='text-white'style={{position: 'relative'}}>
-              <i className="bi bi-cart " style={{fontSize:'1.3rem',marginRight:'25px'}}></i>
-              { products.length>0  &&
-              <Badge bg="danger" pill style={{position: 'absolute', top: '0',right: '-8px', fontSize:'0.7rem',marginRight:'25px'}}> {products.length}</Badge>}
+            <Nav.Link onClick={() => navigate('/cart')} className='text-white' style={{ position: 'relative' }}>
+              <i className="bi bi-cart " style={{ fontSize: '1.3rem', marginRight: '25px' }}></i>
+              {products.length > 0 &&
+                <Badge bg="danger" pill style={{ position: 'absolute', top: '0', right: '-8px', fontSize: '0.7rem', marginRight: '25px' }}> {products.length}</Badge>}
             </Nav.Link>
 
 
@@ -79,25 +79,27 @@ function NavBar() {
               />
               <Button variant="outline-success" onClick={search}>Search</Button>
             </Form>
-          
             {
               !isLoggedIn && (
-                <Button className='ms-2' variant="success" onClick={() => setShowLoginModal(true)}>
-                  <Image src={profile} roundedCircle className='me-2' /> Login
+                <Button
+                  className='ms-2'
+                  variant="success"
+                  onClick={() => setShowLoginModal(true)}
+                >
+                  Login
                 </Button>
               )
             }
 
+
             {isLoggedIn && (
               <Dropdown className='ms-2'>
                 <Dropdown.Toggle variant="dark">
-                  <Image src={rahul} roundedCircle className='me-2' style={{objectFit: 'cover', height:'35px', width:'35px'}}/> {userName}
+                  {userName}
                 </Dropdown.Toggle>
 
                 <Dropdown.Menu style={{ backgroundColor: '#f8f9fa' }}>
-                  <Dropdown.Item href="/profile">
-                    <Image src={profile} className='me-2' />Manage Profile
-                  </Dropdown.Item>
+
 
                   <Dropdown.Item href="/orders">
                     <Image src={oders} className='me-2' />Orders
