@@ -59,7 +59,9 @@ function CheckOut() {
                 country: country,
                 zipCode: zipCode
             }
-            const stripe = await loadStripe(import.meta.env.VITE_STRIPE_PUBLIC_KEY); let tokenSend = 'Bearer' + ' ' + localStorage.getItem('token');
+            console.log("Stripe Key:", import.meta.env.VITE_STRIPE_PUBLIC_KEY);
+            const stripe = await loadStripe(import.meta.env.VITE_STRIPE_PUBLIC_KEY); 
+            let tokenSend = 'Bearer' + ' ' + localStorage.getItem('token');
             const headers = {
                 'Content-Type': 'application/json',
                 authorization: tokenSend
