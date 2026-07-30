@@ -11,9 +11,14 @@ const discount = require('./routes/discount');
 const user = require('./routes/user');
 const place = require('./routes/place');
 const payment = require('./routes/payment');
+const cors = require("cors");
+
 app.use(cors({
-    origin: process.env.FRONTEND_URL,
-    credentials: true
+  origin: [
+    "https://user-book-ten.vercel.app",
+    "https://admin-book-two.vercel.app"
+  ],
+  credentials: true
 }));
 app.use(book);
 app.use(mobile);
