@@ -13,15 +13,10 @@ const transporter = nodemailer.createTransport({
     auth: {
         user: process.env.EMAIL_USER,
         pass: process.env.EMAIL_PASS
-    }
-});
-
-transporter.verify((err, success) => {
-    if (err) {
-        console.log("SMTP Error:", err);
-    } else {
-        console.log("SMTP Server Ready");
-    }
+    },
+    connectionTimeout: 60000,
+    greetingTimeout: 60000,
+    socketTimeout: 60000
 });
 
 
