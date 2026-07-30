@@ -5,19 +5,27 @@ const Review = require("../models/Review");
 
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
+const nodemailer = require("nodemailer");
 
-// Initialize Resend with API Key from environment variables
-const { Resend } = require("resend");
-const resend = new Resend(process.env.RESEND_API_KEY);
+// Elastic Email Transporter
+const transporter = nodemailer.createTransport({
+    host: "smtp.elasticemail.com",
+    port: 2525, // Port 2525 Render par block nahi hota
+    secure: false,
+    auth: {
+        user: process.env.ELASTIC_USER,
+        pass: process.env.ELASTIC_PASS
+    }
+});
 
 async function doAdminLogin(req, res) {
     try {
-        console.log("Admin Login Request:", req.body);
+        console.log(req.body);
 
         let user = await Admin.findOne({ email: req.body.email });
 
         if (!user) {
-            return res.status(401).send({
+            return res.status(500).send({
                 success: false,
                 message: "Invalid User Name / Password"
             });
@@ -25,16 +33,14 @@ async function doAdminLogin(req, res) {
 
         if (user.lockUntil && user.lockUntil > Date.now()) {
             let remaining = Math.ceil((user.lockUntil - Date.now()) / 60000);
+
             return res.status(403).send({
                 success: false,
                 message: `Account locked. Try again after ${remaining} minute(s).`
             });
         }
 
-        // Fixed password comparison using bcrypt
-        let isMatch = await bcrypt.compare(req.body.password, user.password);
-
-        if (isMatch) {
+        if (user.password === req.body.password) {
             user.lastLogin = new Date();
             user.loginAttempts = 0;
             user.lockUntil = null;
@@ -56,13 +62,13 @@ async function doAdminLogin(req, res) {
 
         await user.save();
 
-        return res.status(401).send({
+        return res.status(500).send({
             success: false,
             message: "Invalid User Name / Password"
         });
 
     } catch (error) {
-        console.error("Admin Login Error:", error);
+        console.log(error);
         return res.status(500).send({
             success: false,
             message: "Something went wrong"
@@ -72,7 +78,7 @@ async function doAdminLogin(req, res) {
 
 async function addUser(req, res) {
     try {
-        console.log("Signup Body:", req.body);
+        console.log(req.body);
 
         let existUser = await User.findOne({
             email: req.body.email
@@ -86,23 +92,28 @@ async function addUser(req, res) {
         }
 
         let user = new User(req.body);
-        let encryptPassword = await bcrypt.hash(req.body.password, 10);
+        let encryptPassword = bcrypt.hashSync(req.body.password, 10);
         user.password = encryptPassword;
 
         await user.save();
 
-        // Send email asynchronously via Resend
-        try {
-            await resend.emails.send({
-                from: "Book Store <onboarding@resend.dev>",
-                to: [req.body.email],
-                subject: "Book Store Account Created",
-                text: `Dear ${req.body.firstName || 'User'},\n\nYour account has been created successfully.\n\nThank you for joining our Book Store.`
-            });
-        } catch (mailErr) {
-            console.error("Signup Email Error:", mailErr);
-            // Don't throw 500 here if user is already saved in database
-        }
+        let mailOption = {
+            from: `"Book Store" <${process.env.ELASTIC_USER}>`, // ELASTIC_USER updated here
+            to: req.body.email,
+            subject: "Book Store Account Created",
+            text:
+                "Dear " +
+                req.body.firstName +
+                ",\n\nYour account has been created successfully.\n\nThank you for joining our Book Store."
+        };
+
+        transporter.sendMail(mailOption, (err, info) => {
+            if (err) {
+                console.log("Mail Error:", err.message);
+            } else {
+                console.log("Mail Sent:", info.response);
+            }
+        });
 
         return res.status(200).send({
             success: true,
@@ -110,7 +121,7 @@ async function addUser(req, res) {
         });
 
     } catch (error) {
-        console.error("Add User Error:", error);
+        console.log(error);
         return res.status(500).send({
             success: false,
             message: "Something went wrong"
@@ -118,62 +129,59 @@ async function addUser(req, res) {
     }
 }
 
-async function sendOtpForSignup(req, res) {
+function sendOtpForSignup(req, res) {
     try {
-        console.log("OTP Request Body:", req.body);
-
-        if (!req.body.email) {
-            return res.status(400).send({
-                success: false,
-                message: "Email address is required"
-            });
-        }
+        console.log(req.body);
 
         let otp = Math.floor(Math.random() * 9000) + 1000;
-        console.log("Generated OTP:", otp);
+        console.log("OTP:", otp);
 
-        const { data, error } = await resend.emails.send({
-            from: "Book Store <onboarding@resend.dev>",
-            to: [req.body.email],
+        let mailOption = {
+            from: `"Book Store" <${process.env.ELASTIC_USER}>`, // ELASTIC_USER updated here
+            to: req.body.email,
             subject: "OTP Verification",
-            text: `Dear User,\n\nYour OTP is: ${otp}\n\nDo not share this OTP with anyone.`
-        });
+            text:
+                "Dear User,\n\nYour OTP is: " +
+                otp +
+                "\n\nDo not share this OTP with anyone."
+        };
 
-        if (error) {
-            console.error("Resend API Error:", error);
-            return res.status(500).send({
-                success: false,
-                message: error.message || "Failed to send email"
+        transporter.sendMail(mailOption, (err, info) => {
+            if (err) {
+                console.log("Mail Error:", err.message);
+                return res.status(500).send({
+                    success: false,
+                    message: "Mail not sent"
+                });
+            }
+
+            console.log("Mail Sent:", info.response);
+            return res.status(200).send({
+                success: true,
+                data: otp,
+                message: "OTP Sent Successfully"
             });
-        }
-
-        console.log("Resend Mail Sent Response:", data);
-
-        return res.status(200).send({
-            success: true,
-            data: otp,
-            message: "OTP Sent Successfully"
         });
 
     } catch (error) {
-        console.error("OTP Error:", error);
+        console.log(error);
         return res.status(500).send({
             success: false,
-            message: error.message || "Something went wrong"
+            message: "Something went wrong"
         });
     }
 }
 
 async function doLogin(req, res) {
     try {
-        console.log("User Login Request:", req.body);
+        console.log(req.body);
 
         let user = await User.findOne({
             email: req.body.email
         });
 
         if (!user) {
-            return res.status(401).send({
+            return res.status(500).send({
                 success: false,
                 message: "Invalid Email/Password"
             });
@@ -185,7 +193,7 @@ async function doLogin(req, res) {
         );
 
         if (!validPassword) {
-            return res.status(401).send({
+            return res.status(500).send({
                 success: false,
                 message: "Invalid Email/Password"
             });
@@ -217,7 +225,7 @@ async function doLogin(req, res) {
         });
 
     } catch (error) {
-        console.error("Login Error:", error);
+        console.log(error);
         return res.status(500).send({
             success: false,
             message: "Something went wrong"
@@ -237,7 +245,7 @@ async function getMyOrders(req, res) {
         });
 
     } catch (error) {
-        console.error("Get Orders Error:", error);
+        console.log(error);
         return res.status(500).send({
             success: false,
             message: "Something went wrong"
@@ -258,15 +266,13 @@ async function postComment(req, res) {
         await review.save();
 
         return res.status(200).send({
-            success: true,
-            message: "Review added successfully"
+            success: true
         });
 
     } catch (error) {
-        console.error("Post Comment Error:", error);
+        console.log(error);
         return res.status(500).send({
-            success: false,
-            message: "Something went wrong"
+            success: false
         });
     }
 }
@@ -282,10 +288,9 @@ async function getReviewForAdmin(req, res) {
         });
 
     } catch (error) {
-        console.error("Get Reviews Error:", error);
+        console.log(error);
         return res.status(500).send({
-            success: false,
-            message: "Something went wrong"
+            success: false
         });
     }
 }
