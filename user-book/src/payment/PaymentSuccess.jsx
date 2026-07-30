@@ -22,69 +22,125 @@ function PaymentSuccess() {
       .then((result) => {
         if (result.data.success) {
           setTransaction(result.data.data);
+
+          // Remove transaction id after successful update
+          localStorage.removeItem("transactionId");
         }
       })
       .catch((err) => {
-        console.log(err);
+        console.error(err);
       })
       .finally(() => {
         setLoading(false);
       });
   }, []);
 
+  // Loading Screen
   if (loading) {
     return (
-      <Container className="text-center mt-5">
-        <Spinner animation="border" />
-        <h5 className="mt-3">Verifying Payment...</h5>
+      <Container className="d-flex justify-content-center align-items-center vh-100">
+        <div className="text-center">
+          <Spinner animation="border" variant="success" />
+          <h4 className="mt-3">Verifying Payment...</h4>
+        </div>
+      </Container>
+    );
+  }
+
+  // If transaction not found
+  if (!transaction) {
+    return (
+      <Container className="mt-5 text-center">
+        <Card className="shadow p-5">
+          <div style={{ fontSize: "70px" }}>❌</div>
+
+          <h2 className="text-danger">Payment Information Not Found</h2>
+
+          <p>
+            We couldn't find your transaction details.
+          </p>
+
+          <Link to="/">
+            <Button variant="primary">
+              Back to Home
+            </Button>
+          </Link>
+        </Card>
       </Container>
     );
   }
 
   return (
     <Container className="mt-5 mb-5">
-      <Card className="shadow p-4 text-center">
+      <Card
+        className="shadow-lg p-5 mx-auto"
+        style={{ maxWidth: "700px", borderRadius: "15px" }}
+      >
+        <div className="text-center">
 
-        <div style={{ fontSize: "70px" }}>✅</div>
+          <div style={{ fontSize: "80px" }}>✅</div>
 
-        <h2 className="text-success">Payment Successful</h2>
+          <h2 className="text-success fw-bold mt-3">
+            Payment Successful
+          </h2>
 
-        <p>Your order has been placed successfully.</p>
+          <p className="text-muted">
+            Thank you! Your order has been placed successfully.
+          </p>
 
-        {transaction && (
-          <>
-            <hr />
+          <hr />
 
-            <h5>Transaction ID</h5>
-            <p style={{ wordBreak: "break-all" }}>
-              {transaction.transactionId}
-            </p>
+          <table className="table table-bordered mt-4">
+            <tbody>
 
-            <h5>Status</h5>
-            <p className="text-success fw-bold">
-              {transaction.status}
-            </p>
+              <tr>
+                <th width="35%">Transaction ID</th>
+                <td style={{ wordBreak: "break-all" }}>
+                  {transaction.transactionId}
+                </td>
+              </tr>
 
-            <h5>Order Date</h5>
-            <p>
-              {new Date(transaction.created_at).toLocaleString()}
-            </p>
+              <tr>
+                <th>Status</th>
+                <td className="text-success fw-bold">
+                  {transaction.status}
+                </td>
+              </tr>
 
-            <h5>Total Amount</h5>
-            <p>
-              ₹ {transaction.totalPrice}
-            </p>
-          </>
-        )}
+              <tr>
+                <th>Order Date</th>
+                <td>
+                  {new Date(transaction.created_at).toLocaleString("en-IN")}
+                </td>
+              </tr>
 
-        <div className="mt-4">
-          <Link to="/">
-            <Button variant="success">
-              Continue Shopping
-            </Button>
-          </Link>
+              <tr>
+                <th>Total Amount</th>
+                <td className="fw-bold">
+                  ₹ {transaction.totalPrice}
+                </td>
+              </tr>
+
+            </tbody>
+          </table>
+
+          <div className="d-flex justify-content-center gap-3 mt-4">
+
+            <Link to="/">
+              <Button variant="success">
+                Continue Shopping
+              </Button>
+            </Link>
+
+            <Link to="/orders">
+              <Button variant="outline-primary">
+                View Orders
+              </Button>
+            </Link>
+
+          </div>
+
         </div>
-
       </Card>
     </Container>
   );
