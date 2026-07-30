@@ -19,14 +19,13 @@ async function dopayment(req, res) {
             quantity: 1
         }))
         const session = await stripe.checkout.sessions.create({
-            payment_method_types: ['card'],
+            payment_method_types: ["card"],
             line_items: lineItems,
-            mode: 'payment',
-            // success_url: 'http://localhost:5174/payment/success',
-            // cancel_url:'http://localhost:5174/payment/failure'
-            success_url: `https://user-book-ten.vercel.app/payment/success`,
-            cancel_url: `https://user-book-ten.vercel.app/payment/success`,
-        })
+            mode: "payment",
+
+            success_url: `${process.env.FRONTEND_URL}/payment/success`,
+            cancel_url: `${process.env.FRONTEND_URL}/payment/failure`,
+        });
         if (session) {
             let transaction = new Transaction(data);
             transaction.products = products;
