@@ -71,7 +71,12 @@ function PaymentSuccess() {
   }
 
   return (
+    
     <Container className="mt-5 mb-5">
+        
+        <h1 style={{ color: "red", textAlign: "center" }}>
+  NEW UI TEST
+</h1>
       <Card
         className="shadow-lg p-5 mx-auto"
         style={{ maxWidth: "700px", borderRadius: "15px" }}
