@@ -11,7 +11,6 @@ const discount = require('./routes/discount');
 const user = require('./routes/user');
 const place = require('./routes/place');
 const payment = require('./routes/payment');
-const cors = require("cors");
 
 app.use(cors({
   origin: [
