@@ -9,12 +9,18 @@ const jwt = require("jsonwebtoken");
 
 
 const transporter = nodemailer.createTransport({
-    host: "smtp.gmail.com",
-    port: 465,
-    secure: true,
+    service: "gmail",
     auth: {
         user: process.env.EMAIL_USER,
         pass: process.env.EMAIL_PASS
+    }
+});
+
+transporter.verify((err, success) => {
+    if (err) {
+        console.log("SMTP Error:", err);
+    } else {
+        console.log("SMTP Server Ready");
     }
 });
 
@@ -95,17 +101,17 @@ async function addUser(req, res) {
         });
 
         if (existUser) {
-
-            return res.status(500).send({
+            return res.status(400).send({
                 success: false,
-                message: "User Already Exist"
+                message: "User Already Exists"
             });
-
         }
 
         let user = new User(req.body);
 
-        user.password = bcrypt.hashSync(req.body.password, 10);
+        let encryptPassword = bcrypt.hashSync(req.body.password, 10);
+
+        user.password = encryptPassword;
 
         await user.save();
 
@@ -115,12 +121,12 @@ async function addUser(req, res) {
 
             to: req.body.email,
 
-            subject: "Book Store Account",
+            subject: "Book Store Account Created",
 
             text:
                 "Dear " +
                 req.body.firstName +
-                ", your account has been created successfully."
+                ",\n\nYour account has been created successfully.\n\nThank you for joining our Book Store."
 
         };
 
@@ -128,21 +134,21 @@ async function addUser(req, res) {
 
             if (err) {
 
-                console.log(err);
+                console.log("Mail Error:", err.message);
 
-                return res.status(500).send({
-                    success: false,
-                    message: "Mail not sent"
-                });
+            } else {
+
+                console.log("Mail Sent:", info.response);
 
             }
 
-            console.log(info.response);
+        });
 
-            return res.status(200).send({
-                success: true,
-                message: "User Signup Successfully"
-            });
+        return res.status(200).send({
+
+            success: true,
+
+            message: "User Signup Successfully"
 
         });
 
@@ -151,8 +157,11 @@ async function addUser(req, res) {
         console.log(error);
 
         return res.status(500).send({
+
             success: false,
+
             message: "Something went wrong"
+
         });
 
     }
@@ -168,7 +177,7 @@ function sendOtpForSignup(req, res) {
 
         let otp = Math.floor(Math.random() * 9000) + 1000;
 
-        console.log("OTP :", otp);
+        console.log("OTP:", otp);
 
         let mailOption = {
 
@@ -179,9 +188,9 @@ function sendOtpForSignup(req, res) {
             subject: "OTP Verification",
 
             text:
-                "Dear User,\n\nYour OTP is : " +
+                "Dear User,\n\nYour OTP is: " +
                 otp +
-                "\n\nDo not share it with anyone."
+                "\n\nDo not share this OTP with anyone."
 
         };
 
@@ -189,21 +198,28 @@ function sendOtpForSignup(req, res) {
 
             if (err) {
 
-                console.log(err);
+                console.log("Mail Error:", err.message);
 
                 return res.status(500).send({
+
                     success: false,
+
                     message: "Mail not sent"
+
                 });
 
             }
 
-            console.log(info.response);
+            console.log("Mail Sent:", info.response);
 
             return res.status(200).send({
+
                 success: true,
+
                 data: otp,
+
                 message: "OTP Sent Successfully"
+
             });
 
         });
@@ -213,8 +229,11 @@ function sendOtpForSignup(req, res) {
         console.log(error);
 
         return res.status(500).send({
+
             success: false,
+
             message: "Something went wrong"
+
         });
 
     }
