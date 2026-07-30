@@ -24,8 +24,8 @@ async function dopayment(req, res) {
             mode: 'payment',
             // success_url: 'http://localhost:5174/payment/success',
             // cancel_url:'http://localhost:5174/payment/failure'
-            success_url: `${process.env.FRONTEND_URL}/payment/success`,
-            cancel_url: `${process.env.FRONTEND_URL}/payment/failure`,
+            success_url: `https://user-book-ten.vercel.app/payment/success`,
+            cancel_url: `https://user-book-ten.vercel.app/payment/success`,
         })
         if (session) {
             let transaction = new Transaction(data);
