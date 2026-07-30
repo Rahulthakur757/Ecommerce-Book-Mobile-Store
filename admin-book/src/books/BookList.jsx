@@ -7,13 +7,14 @@ import 'bootstrap/dist/css/bootstrap.min.css'
 import 'bootstrap-icons/font/bootstrap-icons.css'
 
 
+
 function BookList() {
     let navigate = useNavigate()
     let [books, setBooks] = useState([]);
     const [show, setShow] = useState(false);
     let [isDelete, setIsDelete] = useState(false);
     let [searchByBookName, setsearchByBookName] = useState('')
-
+const [showSpinner, setShowSpinner] = useState(false);
     let [nop,setNop] = useState(1);
     let [pageNo, setPageNo] = useState(1);
     let [totalBook, setTotalBook] = useState(0)
