@@ -137,11 +137,14 @@ function sendOtpForSignup(req, res) {
         let otp = Math.floor(Math.random() * 9000) + 1000;
 
         let mailOption = {
-            from: `"Book Store" <${process.env.BREVO_USER}>`,
+            // Exact yahi verified email use karna hai
+            from: `"Book Store" <rahul24708mca@rdec.in>`,
             to: req.body.email,
             subject: "OTP Verification",
             text: `Dear User,\n\nYour OTP is: ${otp}\n\nDo not share this OTP with anyone.`
         };
+
+
 
         transporter.sendMail(mailOption, (err, info) => {
             if (err) {
