@@ -91,15 +91,14 @@ function NavBar() {
               )
             }
 
-
             {isLoggedIn && (
               <Dropdown className='ms-2'>
                 <Dropdown.Toggle variant="dark">
                   {userName}
                 </Dropdown.Toggle>
 
-                <Dropdown.Menu style={{ backgroundColor: '#f8f9fa' }}>
 
+                <Dropdown.Menu align="end" style={{ backgroundColor: '#f8f9fa' }}>
 
                   <Dropdown.Item href="/orders">
                     <Image src={oders} className='me-2' />Orders
