@@ -7,14 +7,14 @@ const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 const nodemailer = require("nodemailer");
 
-// Elastic Email Transporter
+// Brevo Transporter
 const transporter = nodemailer.createTransport({
-    host: "smtp.elasticemail.com",
-    port: 2525, // Port 2525 Render par block nahi hota
+    host: "smtp-relay.brevo.com",
+    port: 587,
     secure: false,
     auth: {
-        user: process.env.ELASTIC_USER,
-        pass: process.env.ELASTIC_PASS
+        user: process.env.BREVO_USER,
+        pass: process.env.BREVO_PASS
     }
 });
 
@@ -131,19 +131,13 @@ async function addUser(req, res) {
 
 function sendOtpForSignup(req, res) {
     try {
-        console.log(req.body);
-
         let otp = Math.floor(Math.random() * 9000) + 1000;
-        console.log("OTP:", otp);
 
         let mailOption = {
-            from: `"Book Store" <${process.env.ELASTIC_USER}>`, // ELASTIC_USER updated here
+            from: `"Book Store" <${process.env.BREVO_USER}>`,
             to: req.body.email,
             subject: "OTP Verification",
-            text:
-                "Dear User,\n\nYour OTP is: " +
-                otp +
-                "\n\nDo not share this OTP with anyone."
+            text: `Dear User,\n\nYour OTP is: ${otp}\n\nDo not share this OTP with anyone.`
         };
 
         transporter.sendMail(mailOption, (err, info) => {
@@ -155,7 +149,7 @@ function sendOtpForSignup(req, res) {
                 });
             }
 
-            console.log("Mail Sent:", info.response);
+            console.log("Mail Sent Successfully:", info.response);
             return res.status(200).send({
                 success: true,
                 data: otp,
