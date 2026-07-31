@@ -7,15 +7,18 @@ const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 const nodemailer = require("nodemailer");
 
-// Brevo Transporter
 const transporter = nodemailer.createTransport({
     host: "smtp-relay.brevo.com",
-    port: 587,
+    port: 2525, // Port 2525 Render par block nahi hota
     secure: false,
     auth: {
         user: process.env.BREVO_USER,
         pass: process.env.BREVO_PASS
-    }
+    },
+    // Timeout issues avoid karne ke liye extra settings:
+    connectionTimeout: 10000, // 10 seconds
+    greetingTimeout: 10000,
+    socketTimeout: 10000
 });
 
 async function doAdminLogin(req, res) {
