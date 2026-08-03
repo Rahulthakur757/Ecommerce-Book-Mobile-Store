@@ -4,8 +4,8 @@ const Schema = mongoose.Schema;
 const reviewSchema = new Schema({
     userEmail: { type: String, required: true },
     userName: { type: String, required: true },
-    bookId: { type: mongoose.Schema.Types.ObjectId,ref: 'Book',  required: true },
-    mobileId: { type: mongoose.Schema.Types.ObjectId, ref: 'Mobile',required: true},
+    bookId: { type: mongoose.Schema.Types.ObjectId,ref: 'Book' },
+    mobileId: { type: mongoose.Schema.Types.ObjectId, ref: 'Mobile'},
     comment: { type: String, required: true },
     rating: { type: Number},
     status: { type: String, default: 'Active', enum: ['Active', 'Disabled']},

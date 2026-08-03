@@ -253,13 +253,27 @@ async function getMyOrders(req, res) {
     }
 }
 
+
+
+
+
+
+
 async function postComment(req, res) {
     try {
         let review = new Review();
 
         review.userEmail = req.user.email;
         review.userName = req.user.name;
-        review.bookId = req.body.book;
+
+        if (req.body.book) {
+            review.bookId = req.body.book;
+        }
+
+        if (req.body.mobile) {
+            review.mobileId = req.body.mobile;
+        }
+
         review.comment = req.body.comment;
         review.rating = req.body.rating;
 
@@ -271,11 +285,35 @@ async function postComment(req, res) {
 
     } catch (error) {
         console.log(error);
+
         return res.status(500).send({
             success: false
         });
     }
 }
+// async function postComment(req, res) {
+//     try {
+//         let review = new Review();
+
+//         review.userEmail = req.user.email;
+//         review.userName = req.user.name;
+//         review.bookId = req.body.book;
+//         review.comment = req.body.comment;
+//         review.rating = req.body.rating;
+
+//         await review.save();
+
+//         return res.status(200).send({
+//             success: true
+//         });
+
+//     } catch (error) {
+//         console.log(error);
+//         return res.status(500).send({
+//             success: false
+//         });
+//     }
+// }
 
 async function getReviewForAdmin(req, res) {
     try {
