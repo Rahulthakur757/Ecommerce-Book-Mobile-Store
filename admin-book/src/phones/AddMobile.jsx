@@ -11,7 +11,6 @@ function AddMobile() {
     const [show, setShow] = useState(false);
 
     const handleClose = () => {
-         console.log("Modal closed. Navigating...");
         setShow(false);
         navigate('/')  
     }
@@ -80,7 +79,6 @@ function AddMobile() {
                 'Content-Type': 'multipart/form-data'
             }
         }).then((result) => {
-            console.log("Result ", result)
             if(result.data.success) {
                  setShow(true); 
             }

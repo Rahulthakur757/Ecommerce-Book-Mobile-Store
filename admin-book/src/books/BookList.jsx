@@ -42,7 +42,6 @@ const [showSpinner, setShowSpinner] = useState(false);
             }
         }).then((result) => {
             if (result.data.success) {
-                // console.log(result.data.data);
                 setBooks(result.data.data);
                 setTotalBook(result.data.totalCount)
                 setNop(Math.ceil(result.data.totalCount / bookperpage));
@@ -112,11 +111,6 @@ const [showSpinner, setShowSpinner] = useState(false);
                                     <i className="bi bi-eye" onClick={() => goToView(book._id)}></i>
                                     <i className="bi bi-pencil ms-3" onClick={() => goToEdit(book._id)}></i>
                                     <i className="bi bi-trash ms-3" onClick={() => goToDelete(book._id)}></i>
-
-
-                                    {/* <button className="btn btn-success ms-2 " onClick={()=> goToView(book._id)}><FaEye style={{ marginRight: '5px' }} />View</button> */}
-                                    {/* <button className="btn btn-primary ms-2" onClick={()=> goToEdit(book._id)}><FaEdit style={{ marginRight: '5px' }}/>Edit</button>
-                                <button className="btn btn-danger ms-2" onClick={()=> goToDelete(book._id)}><FaTrash style={{ marginRight: '5px' }} />Delete</button>   */}
                                 </td>
                             </tr>
                         )

@@ -121,9 +121,6 @@ function MobileList() {
                                     <i className="bi bi-eye" onClick={() => goToView(mobile._id)}></i>
                                     <i className="bi bi-pencil ms-3" onClick={() => goToEdit(mobile._id)}></i>
                                     <i className="bi bi-trash ms-3" onClick={() => goToDelete(mobile._id)}></i>
-                                    {/* <button className="btn btn-primary" onClick={()=> goToView(mobile._id)}> <FaEye style={{ marginRight: '5px' }}  /> </button>
-                                <button className="btn btn-success ms-2" onClick={()=> goToEdit(mobile._id)}> <FaEdit style={{ marginRight: '5px' }}/></button>
-                                <button className="btn btn-danger ms-2" onClick={()=> goToDelete(mobile._id)}> <FaTrash style={{ marginRight: '5px' }} /></button> */}
                                 </td>
 
                             </tr>

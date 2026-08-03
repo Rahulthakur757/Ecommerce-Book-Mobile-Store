@@ -1,8 +1,5 @@
 const Book = require('../models/Book');
 const Discount = require('../models/Discount');
-// const Mobile = require('../models/Mobile');
-
-// yah function book par discount add karne ke lie h
 async function getBooksForDiscount(req, res) {
     try {
         let books = await Book.find({ bookTitle: { $regex: new RegExp(req.query.bookTitle, "i") } }, { _id: 1, bookTitle: 1 });
@@ -20,26 +17,6 @@ async function getBooksForDiscount(req, res) {
 
     };
 };
-
-// yah function Mobiles par discount add karne ke lie h
-// async function getMobilesForDiscount(req, res) {
-//     try {
-//         let mobiles = await Mobile.find({name: {$regex: new RegExp(req.query.name, "i")}}, {_id: 1, name: 1});
-//         let sendMobiles = [];
-//         for(let i = 0; i< mobiles.length; i++) {
-//             sendMobiles.push({
-//                 value: mobiles[i]._id,
-//                 label: mobiles[i].name
-//             })
-//         }
-//          res.status(200).send({ success: true, data: sendMobiles });
-//     } catch (error) {
-//         console.log(error,'eroooor')
-//         res.status(500).send({ success: false, message: 'Somethings went wrong' });
-        
-//     }
-// }
-
 
 async function addDiscount(req, res) {
     try {
@@ -71,7 +48,6 @@ async function getDiscounts(req, res) {
         let skip = (req.query.pageNo - 1) * req.query.limit;
         let limit = req.query.limit;
         let discounts = await Discount.find({}).populate('book', { bookTitle:1, author: 1, originalPrice: 1 }).skip(skip).limit(limit);
-        // console.log('Discounts', discounts);
         let totalDiscounts = await Discount.countDocuments({});
         res.status(200).send({ success: true, data: discounts, totalCount: totalDiscounts });
     } catch (error) {

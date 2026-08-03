@@ -5,8 +5,6 @@ function ReviewList() {
     let [reviews, setReviews] = useState([]);
 
     useEffect(() => {
-
-         console.log("API URL =", apiUrl);
             axios({
                 url: apiUrl + '/admin/review',
                 method: 'get'

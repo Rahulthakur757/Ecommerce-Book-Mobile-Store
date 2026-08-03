@@ -3,11 +3,6 @@ const Mobile = require("../models/Mobile");
 
 async function searchProducts(req, res) {
     try {
-
-         console.log("SEARCH CONTROLLER QUERY =", req.query.query);
-         
-
-         
         let query = (req.query.query || "").trim();
 
         if (!query) {

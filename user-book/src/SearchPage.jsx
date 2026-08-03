@@ -26,9 +26,6 @@ function SearchPage() {
             }
         })
         .then((res) => {
-
-            console.log("Search Response:", res.data);
-
             setBooks(res.data.books || []);
             setMobiles(res.data.mobiles || []);
 

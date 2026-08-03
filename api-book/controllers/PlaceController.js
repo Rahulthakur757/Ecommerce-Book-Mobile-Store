@@ -86,20 +86,6 @@ async function UpdatePlaceOfBook(req,res) {
     }
 }
 
-//...................................................for Mobile Phone..................................................................//
-
-// async function addPlaceForMobileDelivery(req,res){
-//     try {
-//         let productDeliveryPlaceForMobile = new ProductDeliveryPlace(req.body);
-//         await productDeliveryPlaceForMobile.save();
-//         res.status(200).send({ success: true, message: ' Add Place for Mobile Delivery is successfully'});
-        
-//     } catch (error) {
-//          console.log(error);
-//         res.status(500).send({ success: false, message:'Something went wrong..'});
-        
-//     }
-// }
 
 module.exports = {
     addPlaceForBookDelivery,
@@ -108,6 +94,5 @@ module.exports = {
     deletePlaceOfBook,
     getPlaceForBook,
     UpdatePlaceOfBook,
-    //.......................................................//
-    // addPlaceForMobileDelivery,
+  
 }

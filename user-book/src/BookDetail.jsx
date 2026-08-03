@@ -30,7 +30,6 @@ function BookDetail() {
             setBook(result.data.data);
             setReviews(result.data.reviews)
         }).catch((err) => {
-            // console.log(err)
             alert(err);
         })
     }, [params]);

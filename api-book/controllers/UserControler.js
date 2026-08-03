@@ -23,7 +23,6 @@ const transporter = nodemailer.createTransport({
 
 async function doAdminLogin(req, res) {
     try {
-        console.log(req.body);
 
         let user = await Admin.findOne({ email: req.body.email });
 
@@ -81,7 +80,6 @@ async function doAdminLogin(req, res) {
 
 async function addUser(req, res) {
     try {
-        console.log(req.body);
 
         let existUser = await User.findOne({
             email: req.body.email
@@ -291,29 +289,7 @@ async function postComment(req, res) {
         });
     }
 }
-// async function postComment(req, res) {
-//     try {
-//         let review = new Review();
 
-//         review.userEmail = req.user.email;
-//         review.userName = req.user.name;
-//         review.bookId = req.body.book;
-//         review.comment = req.body.comment;
-//         review.rating = req.body.rating;
-
-//         await review.save();
-
-//         return res.status(200).send({
-//             success: true
-//         });
-
-//     } catch (error) {
-//         console.log(error);
-//         return res.status(500).send({
-//             success: false
-//         });
-//     }
-// }
 
 async function getReviewForAdmin(req, res) {
     try {

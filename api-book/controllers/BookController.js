@@ -6,8 +6,6 @@ const Review = require('../models/Review')
 //book ko add karne ka route (AddBook.jsx)
 async function addBook(req, res) {
     try {
-        console.log("FILE:", req.file);
-
         if (!req.file) {
             return res.status(400).send({
                 success: false,
@@ -43,7 +41,6 @@ async function addBook(req, res) {
     }
 }
 //book ki list print karane ka route(BookList.jsx)
-// book ki list print karane ka route (BookList.jsx)
 async function getBooks(req, res) {
     try {
         let pageNo = parseInt(req.query.pageNo) || 1;
@@ -130,24 +127,9 @@ async function editBook(req, res) {
     }
 }
 // ye user-book se (HomeCard.jsx) se aa rha h
-// ye user-book se (HomeCard.jsx) se aa rha h
-
-
-// BookController.js
-
-
-
-
-
-
-
-
 async function getBooksforUserHomePage(req, res) {
     try {
         let search = req.query.search || req.query.bookTitle || "";
-
-        // 👇 Search print hoga
-        console.log("Search =", search);
 
         let filter = {};
 
@@ -163,14 +145,7 @@ async function getBooksforUserHomePage(req, res) {
             };
         }
 
-        // 👇 Filter print hoga
-        console.log("Filter =", JSON.stringify(filter, null, 2));
-
-        // 👇 Database query
         let books = await Book.find(filter);
-
-        // 👇 Kitni books mili
-        console.log("Books Found =", books.length);
 
         return res.status(200).send({
             success: true,
@@ -185,12 +160,6 @@ async function getBooksforUserHomePage(req, res) {
         });
     }
 }
-
-
-
-
-
-
 
 async function getBookForUser(req, res) {
     try {

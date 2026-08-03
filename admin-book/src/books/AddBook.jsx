@@ -79,7 +79,6 @@ function AddBook() {
                 'content-type': 'multipart/form-data'
             }
         }).then((result) => {
-            console.log("Result", result);
             if (result.data.success) {
                 setButtonDisable(false);
                 setShowSpinner(false);

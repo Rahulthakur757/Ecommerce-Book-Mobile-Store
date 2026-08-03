@@ -14,7 +14,6 @@ async function addMobile(req, res) {
             });
             upload = await cloudinary.uploader.upload(req.file.path);
         }
-        console.log("Incoming mobile data:", req.body);
         let mobile = new Mobile(req.body);
         if (req.file && upload) {
             mobile.image = upload.secure_url;
@@ -32,7 +31,6 @@ async function getMobiles(req, res) {
         // let mobiles = await Mobile.find({});
         let skip = (req.query.pageNo - 1) * req.query.limit;
         let limit = req.query.limit;
-        // console.log('req.query', req.query);
         let mobiles = await Mobile.find({ name: { $regex: new RegExp(req.query.name, "i") } }).skip(skip).limit(limit);
         let totalPhones = await Mobile.countDocuments({});
         res.status(200).send({ success: true, data: mobiles, totalCount: totalPhones });
@@ -52,7 +50,7 @@ async function deleteMobile(req, res) {
         res.status(500).send({ success: false, message: 'Somethings went wrong..' });
     }
 }
-//////////////////////////////////////////
+
 async function getMobile(req, res) {
     try {
         let mobileId = req.params.id;
@@ -93,9 +91,6 @@ async function EditMobile(req, res) {
         res.status(500).send({ success: false, message: 'somethings went wrong.....' });
     };
 };
-// MobileControler.js
-
-// MobileControler.js
 
 async function getMobilesForUserHomePage(req, res) {
     try {

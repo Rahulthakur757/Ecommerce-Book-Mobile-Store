@@ -37,9 +37,7 @@ function Login() {
     }
     function handleMessageClose() {
         setMessageModal(false);
-    //      if (isSuccess) {
-    //     window.location.reload();
-    // }
+   
     }
     function showSignupModal() {
         setLogin(false);
@@ -72,7 +70,6 @@ function Login() {
                 setShow(true);
                 setMessageModal(true)
 
-                // setShowSpinner(false);
             }
             showLoginModal()
         }).catch((err) => {
@@ -104,8 +101,6 @@ function Login() {
                 setShow(true);
                 setMessageModal(true)
 
-                // setShowSpinner(false);
-                // setDisbledSendOtpButton(false)
             }
 
         }).catch((err) => {
@@ -155,8 +150,6 @@ function Login() {
                 setIsSuccess(result.data.success);
                 setMessageModal(true);
                 window.location.reload();
-                // setShowSpinner(false);
-                // setDisbledLoginButton(false)
             }
         }).catch((err) => {
             console.log(err);

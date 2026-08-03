@@ -31,7 +31,6 @@ function Login() {
             method: 'post',
             data: data
         }).then((result) =>{
-            //console.log(result);
             if(result.data.success) {
                 setServerMessage(result.data.message)
                 setIsSuccess(result.data.success);
