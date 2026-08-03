@@ -93,24 +93,41 @@ async function EditMobile(req, res) {
         res.status(500).send({ success: false, message: 'somethings went wrong.....' });
     };
 };
+// MobileControler.js
+
+// MobileControler.js
 
 async function getMobilesForUserHomePage(req, res) {
     try {
-        // let phones = await Mobile.find({}, {image:1,name:1, shortDescription:1, originalPrice:1}).limit(req.query.limit);
-        let phones = await Mobile.aggregate([{
-            $lookup: {
-                from: 'discounts',
-                localField: '_id',
-                foreignField: 'mobile',
-                as: 'DiscountDetail'
-            }
-        }])
-        res.status(200).send({ success: true, data: phones });
+        let search = req.query.search || "";
+        let filter = {};
+
+        if (search.trim() !== "") {
+            let safeSearch = search.trim().replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+            filter = {
+                $or: [
+                    { name: { $regex: safeSearch, $options: "i" } },
+                    { brand: { $regex: safeSearch, $options: "i" } },
+                    { shortDescription: { $regex: safeSearch, $options: "i" } }
+                ]
+            };
+        }
+
+        let phones = await Mobile.find(filter);
+
+        return res.status(200).send({ 
+            success: true, 
+            data: phones 
+        });
+
     } catch (error) {
-        res.status(500).send({ success: false, message: 'Somethings went wrong' });
+        console.log("Mobile Search Error:", error);
+        return res.status(500).send({ 
+            success: false, 
+            message: "Something went wrong" 
+        });
     }
 }
-
 
 
 

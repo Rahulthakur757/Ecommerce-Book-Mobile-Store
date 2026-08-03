@@ -7,6 +7,7 @@ const connect = require('./connection');
 const MakeAdmin = require('./MakeAdmin');
 const book = require('./routes/book');
 const mobile = require('./routes/mobile');
+const SearchRoute = require("./routes/SearchRoute");
 const discount = require('./routes/discount');
 const user = require('./routes/user');
 const place = require('./routes/place');
@@ -23,12 +24,17 @@ app.use(cors({
 }));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
+
+app.use(SearchRoute);
+
+
 app.use(book);
 app.use(mobile);
 app.use(discount);
 app.use(user);
 app.use(place)
 app.use(payment)
+
 connect();
 MakeAdmin();
 

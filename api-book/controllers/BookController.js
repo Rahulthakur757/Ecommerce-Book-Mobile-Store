@@ -43,14 +43,31 @@ async function addBook(req, res) {
     }
 }
 //book ki list print karane ka route(BookList.jsx)
+// book ki list print karane ka route (BookList.jsx)
 async function getBooks(req, res) {
     try {
-        let skip = (req.query.pageNo - 1) * req.query.limit;
-        let limit = req.query.limit;
-        let books = await Book.find({ bookTitle: { $regex: new RegExp(req.query.bookTitle, "i") } }).skip(skip).limit(limit);
-        let totalBooks = await Book.countDocuments({});
-        res.status(200).send({ success: true, data: books, totalCount: totalBooks });
+        let pageNo = parseInt(req.query.pageNo) || 1;
+        let limit = parseInt(req.query.limit) || 10;
+        let skip = (pageNo - 1) * limit;
+
+        // Search title handle karein (dono ?search= ya ?bookTitle= support karega)
+        let search = req.query.search || req.query.bookTitle || "";
+
+        let filter = {};
+        if (search.trim() !== "") {
+            filter.bookTitle = { $regex: search, $options: "i" };
+        }
+
+        let books = await Book.find(filter).skip(skip).limit(limit);
+        let totalBooks = await Book.countDocuments(filter);
+
+        res.status(200).send({ 
+            success: true, 
+            data: books, 
+            totalCount: totalBooks 
+        });
     } catch (error) {
+        console.log("getBooks Error:", error);
         res.status(500).send({ success: false, message: 'Something went wrong' });
     }
 }
@@ -113,26 +130,68 @@ async function editBook(req, res) {
     }
 }
 // ye user-book se (HomeCard.jsx) se aa rha h
+// ye user-book se (HomeCard.jsx) se aa rha h
+
+
+// BookController.js
+
+
+
+
+
+
+
+
 async function getBooksforUserHomePage(req, res) {
     try {
-        // console.log(req.query);
-        // let books = await Book.find({},{ bookTitle: 1, image:1, shortDescription:1, author:1, binding:1, originalPrice:1}).limit(req.query.limit);
-        // console.log("books", books);
-        let books = await Book.aggregate([{
-            $lookup: {
-                from: 'discounts',
-                localField: '_id',
-                foreignField: 'book',
-                as: 'DiscountDetail'
-            }
-        }])
-        res.status(200).send({ success: true, data: books })
+        let search = req.query.search || req.query.bookTitle || "";
+
+        // 👇 Search print hoga
+        console.log("Search =", search);
+
+        let filter = {};
+
+        if (search.trim() !== "") {
+            let safeSearch = search.trim().replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+
+            filter = {
+                $or: [
+                    { bookTitle: { $regex: safeSearch, $options: "i" } },
+                    { author: { $regex: safeSearch, $options: "i" } },
+                    { genre: { $regex: safeSearch, $options: "i" } }
+                ]
+            };
+        }
+
+        // 👇 Filter print hoga
+        console.log("Filter =", JSON.stringify(filter, null, 2));
+
+        // 👇 Database query
+        let books = await Book.find(filter);
+
+        // 👇 Kitni books mili
+        console.log("Books Found =", books.length);
+
+        return res.status(200).send({
+            success: true,
+            data: books
+        });
 
     } catch (error) {
-        res.status(500).send({ success: false })
-
+        console.log("Book Search Error:", error);
+        return res.status(500).send({
+            success: false,
+            message: "Something went wrong"
+        });
     }
 }
+
+
+
+
+
+
+
 async function getBookForUser(req, res) {
     try {
         let id = req.params.id;

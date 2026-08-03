@@ -16,6 +16,7 @@ import MobileDetail from './phone/MobileDetail.jsx';
 import PaymentSuccess from './payment/PaymentSuccess.jsx';
 import PaymentFailure from './payment/PaymentFailure.jsx';
 import CheckOutSingle from './CheckOutSingle.jsx';
+import SearchPage from './SearchPage.jsx';
 
 createRoot(document.getElementById('root')).render(
 
@@ -30,6 +31,7 @@ createRoot(document.getElementById('root')).render(
       <Route path='/mobile/detail/:id' element={<MobileDetail></MobileDetail>}></Route>
       <Route path='/book' element={<HomeCard/>}></Route>
       <Route path='/mobile' element={<MobileCard/>}></Route>
+      <Route path='/search' element={<SearchPage />} />
       <Route path='/profile' element={<Profile></Profile>}></Route>
       <Route path='/orders' element={<Orders></Orders>}></Route>
       <Route path='/cart' element={<ShoppingCart></ShoppingCart>}></Route>
