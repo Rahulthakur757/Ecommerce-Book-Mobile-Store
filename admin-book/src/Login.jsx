@@ -42,7 +42,6 @@ function Login() {
             setServerMessage(err.response?.data?.message);
             setIsSuccess(false);
              setShow(true);
-            // alert("Invalid username & password..");
         })
     }
 

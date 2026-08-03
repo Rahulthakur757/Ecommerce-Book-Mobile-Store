@@ -37,7 +37,6 @@ function Orders() {
     }, [])
 
     function goToView(myOrder) {
-        alert('ok')
         setSelectedOrder(myOrder)
         setShow(true)
     }
@@ -55,7 +54,7 @@ function Orders() {
     }
 
     function submitReview() {
-        alert('ok')
+        
         let data = {
             book: book,
             comment: comment,
@@ -83,7 +82,7 @@ function Orders() {
         })
     }
 
-    
+
     return (
         <>
             <Container>
