@@ -5,6 +5,8 @@ function ReviewList() {
     let [reviews, setReviews] = useState([]);
 
     useEffect(() => {
+
+         console.log("API URL =", apiUrl);
             axios({
                 url: apiUrl + '/admin/review',
                 method: 'get'
@@ -33,8 +35,7 @@ function ReviewList() {
                 {
                     reviews.map((review,index)=>
                         <tr key={index}>
-                            <td>{review.bookId.bookTitle}</td>
-                            <td>{review.userName}</td>
+<td>{review.bookId?.bookTitle || review.mobileId?.name}</td>                            <td>{review.userName}</td>
                             <td>{review.userEmail}</td>
                             <td>{review.comment}</td>
                             <td>{review.rating}</td>
